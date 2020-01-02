@@ -1,12 +1,10 @@
 <template>
  <div>
-     <div class="top">商品分类</div>
-      <sidebar></sidebar>
+
  </div>
 </template>
 
 <script>
-import sidebar from "../Category/children/sidebar.vue"
  export default {
    data () {
      return {
@@ -14,7 +12,7 @@ import sidebar from "../Category/children/sidebar.vue"
      }
    },
    components: {
-   sidebar
+
    },
    methods: {
 
@@ -32,10 +30,5 @@ import sidebar from "../Category/children/sidebar.vue"
 </script>
 
 <style scoped lang='scss'>
-.top {
-  width: 375px;
-  height: 40px;
-  text-align: center;
-  line-height: 40px;
-}
+
 </style>

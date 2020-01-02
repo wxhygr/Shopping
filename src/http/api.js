@@ -22,6 +22,10 @@ export default {
             verify
         })
     },
+    // 退出登录
+    loginOut() {
+        return service.req(`/loginOut`, {})
+    },
     // 商品
     recommend() {
         return service.req('/recommend')
@@ -43,6 +47,25 @@ export default {
     },
     // 收藏
     collection(goods) {
-        return service.req('/collection', goods)
+        return service.req('/collection', { goods })
+    },
+
+
+
+
+
+
+
+    // 增加收货地址请求
+    postAddress({...args }) {
+        return service.req(`/address`, args)
+    },
+    // 删除收货地址请求
+    deleteAddress(id) {
+        return service.req('/deleteAddress', { id })
+    },
+    // 查询收货地址
+    getAddress() {
+        return service.req(`/getAddress`)
     }
 }

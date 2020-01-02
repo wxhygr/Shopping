@@ -33,7 +33,8 @@ export default {
   data() {
     return {
       goodsId: "",
-      arr: {}
+      arr: {},
+      goods_serlal_number:'',
     };
   },
   components: {},
@@ -43,7 +44,9 @@ export default {
         .goodOne(this.goodsId)
         .then(res => {
           this.arr = res.goods.goodsOne;
+          this.goods_serlal_number = res.goods.goodsOne.goods_serlal_number
             // console.log(this.arr);
+        //  console.log(this.goods_serlal_number);
         })
         .catch(err => {
           console.log(err);
@@ -51,18 +54,33 @@ export default {
     },
     isCollection(){
         this.$api.isCollection(this.goodsId).then(res => {
-            console.log(res);
+            // console.log(res);
         }).catch(err => {
             console.log(err);
         })
     },
+      collection(){
+             this.$api.collection({goods:this.goods_serlal_number})
+             .then(res => { 
+                 console.log(res);
+               }).catch(err => { 
+                 console.log(err);
+               })
+           },
+     
+
+
+   
+
+
     
     clickxin() {}
   },
   mounted() {
     this.goodsId = this.$route.query.goodsId;
     this.goodOne();
-    this.isCollection()
+    this.isCollection();
+    this.collection();
   },
   watch: {},
   computed: {}

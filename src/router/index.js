@@ -59,7 +59,18 @@ const routes = [{
         component: () =>
             import ("../views/Detailspage/detailspage.vue")
     },
-
+    {
+        path: "/address",
+        name: "address",
+        component: () =>
+            import ("../views/Address/address.vue")
+    },
+    {
+        path: "/addressAdit",
+        name: "addressAdit",
+        component: () =>
+            import ("../views/Address/addressAdit.vue")
+    },
 
 
 

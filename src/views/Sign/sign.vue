@@ -94,6 +94,8 @@ export default {
         })
         .then(res => {
           console.log(res);
+         localStorage.setItem('usename',this.username)
+         //this.$router.push({name:'home'})
         })
         .catch(err => {
           console.log(err);
@@ -109,6 +111,8 @@ export default {
         })
         .then(response => {
           console.log(response);
+            localStorage.setItem('usename',this.username)
+            this.$router.push({name:'my'})
         }).catch(err => {
             console.log(err);
         });
