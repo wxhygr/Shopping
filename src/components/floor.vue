@@ -6,8 +6,8 @@
     </div>
 
     <div v-for="(item,index) in arr" :key="index">
-      <img :src="item.image" class="imgea" v-if="index === 0" />
-      <img :src="item.image" class="imga" v-if="index !== 0" />
+      <img :src="item.image" class="imgea" v-if="index === 0" @click="clickarr(item.goodsId)" />
+      <img :src="item.image" class="imga" v-if="index !== 0" @click="clickarr(item.goodsId)" />
     </div>
 
     <div class="floor">
@@ -16,8 +16,8 @@
     </div>
 
     <div v-for="(item,index) in list" :key="index + 'imga'">
-      <img :src="item.image" class="imgea" v-if="index === 0" />
-      <img :src="item.image" class="imga" v-if="index !== 0" />
+      <img :src="item.image" class="imgea" v-if="index === 0" @click="clicklist(item.goodsId)" />
+      <img :src="item.image" class="imga" v-if="index !== 0" @click="clicklist(item.goodsId)" />
     </div>
 
     <div class="floor">
@@ -26,8 +26,8 @@
     </div>
 
     <div v-for="(item,index) in crr" :key="index + 'imgea'">
-      <img :src="item.image" class="imgea" v-if="index === 0" />
-      <img :src="item.image" class="imga" v-if="index !== 0" />
+      <img :src="item.image" class="imgea" v-if="index === 0"  @click="clickcrr(item.goodsId)" />
+      <img :src="item.image" class="imga" v-if="index !== 0"  @click="clickcrr(item.goodsId)" />
     </div>
 
     <div class="floor">
@@ -36,7 +36,7 @@
 
     <div class="product">
       <div class="sale" v-for="(item,index) in hrr" :key="index + 'sale'">
-        <div class="sale-one">
+        <div class="sale-one" @click="clickhrr(item.goodsId)">
           <img :src="item.image" width="100%" height="160px" />
         </div>
         <div class="sale-two">{{item.name}}</div>
@@ -68,11 +68,24 @@ export default {
           this.arr = res.data.floor1;
           this.list = res.data.floor2;
           this.crr = res.data.floor3;
+          console.log(this.crr);
           this.hrr = res.data.hotGoods;
         })
         .catch(err => {
           console.log(err);
         });
+    },
+    clickarr(val) {
+      this.$router.push({ name: "detailspage", query: { goodsId: val } });
+    },
+    clicklist(val) {
+      this.$router.push({ name: "detailspage", query: { goodsId: val } });
+    },
+    clickcrr(val) {
+      this.$router.push({ name: "detailspage", query: { goodsId: val } });
+    },
+    clickhrr(val){
+       this.$router.push({ name: "detailspage", query: { goodsId: val } });
     }
   },
   mounted() {

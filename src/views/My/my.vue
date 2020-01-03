@@ -3,7 +3,7 @@
     <div class="top">会员中心</div>
     <div class="portrait">
       <div class="setup">
-        <van-icon name="setting-o" class="tubiao" />
+          <van-icon name="setting-o" class="tubiao" />
       </div>
       <div class="sign">
         <div class="sign-one" v-if="this.usename === ''" >
@@ -18,7 +18,7 @@
        <div class="usename" v-if="this.usename === ''">欢迎您</div>
        <div class="usename" v-else-if="this.usename !== ''">欢迎您:{{this.usename}}</div>
 
-      <div class="login"  @click="clicklogin" v-if="this.usename === ''">请登录</div>
+      <div class="login"  @click="clicklogin" v-if="this.usename === ''">请登录/注册</div>
       <div class="login"  @click="clickloginout"  v-else-if="this.usename !== ''" >退出登录 </div>
       
     </div>
@@ -44,8 +44,8 @@
         <div class="text">已完成</div>
       </div>
     </div>
-    <div class="order">
-      <div class="left">
+    <div class="order" @click="clickall">
+      <div class="left" >
         <div>
           <van-icon name="records" size="25px" class="ss" />
         </div>全部订单
@@ -53,8 +53,8 @@
       <div class="right">></div>
     </div>
 
-    <div class="order">
-      <div class="left">
+    <div class="order" @click="collection">
+      <div class="left" >
         <div>
           <van-icon name="points" size="25px" class="ss" />
         </div>收藏商品
@@ -62,7 +62,7 @@
       <div class="right">></div>
     </div>
 
-    <div class="order">
+    <div class="order" @click="clickaddress">
       <div class="left">
         <div>
           <van-icon name="gold-coin-o" size="25px" class="ss" />
@@ -88,6 +88,7 @@ export default {
     return {
         usename:'',
         code:'',
+         show: false,
 
     };
   },
@@ -107,7 +108,20 @@ export default {
           localStorage.removeItem("usename")
           this.usename = ''
           //this.$router.push({name:"home"})
-      }
+      },
+      clickall(){
+     this.$router.push({name:"order"})
+      },
+      collection(){
+       this.$router.push({name:"collection"})
+      },
+      clickaddress(){
+     this.$router.push({name:"address"})
+      },
+       
+       showPopup() {
+      this.show = true;
+    }
   },
   mounted() {
       if(localStorage.usename){
@@ -206,4 +220,5 @@ export default {
     margin-top: 5px;
   }
 }
+
 </style>

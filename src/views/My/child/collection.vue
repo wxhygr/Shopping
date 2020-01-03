@@ -1,14 +1,11 @@
 <template>
   <div>
     <div class="top">
-      <div class="gou"></div>
-      <div class="address">购物车</div>
+      <div class="gou" @click="clickvan">
+        <van-icon name="arrow-left" />
+      </div>
+      <div class="address">我的收藏</div>
     </div>
-    <div class="content" v-if="this.usename ===''">
-      <div @click="clickdenglu" class="denglu">请登录</div>
-    </div>
-
-    <div class="content" v-if="this.usename !==''">购物车</div>
   </div>
 </template>
 
@@ -16,31 +13,28 @@
 export default {
   data() {
     return {
-      usename: ""
+      page: 1
     };
   },
   components: {},
   methods: {
-    clickdenglu() {
-      this.$router.push({ name: "sign" });
-    },
-    getCard() {
+    getCollection() {
       this.$api
-        .getCard({})
+        .getCollection()
         .then(res => {
+
           console.log(res);
         })
         .catch(err => {
           console.log(err);
         });
+    },
+    clickvan() {
+      this.$router.back();
     }
   },
   mounted() {
-    if (localStorage.usename) {
-      this.usename = localStorage.getItem("usename");
-    }
-
-    this.getCard();
+    this.getCollection();
   },
   watch: {},
   computed: {}
@@ -64,9 +58,5 @@ export default {
   height: 40px;
   line-height: 40px;
   margin-left: 120px;
-}
-.content {
-  text-align: center;
-  line-height: 300px;
 }
 </style>

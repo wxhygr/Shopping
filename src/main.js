@@ -16,6 +16,7 @@ import AMap from 'vue-amap'; //注意不要和 AMap原始名称覆盖
 
 
 
+
 Vue.use(Lazyload);
 Vue.use(PullRefresh);
 Vue.prototype.$api = api

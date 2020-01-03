@@ -49,6 +49,12 @@ export default {
     collection(goods) {
         return service.req('/collection', { goods })
     },
+    //查询我的收藏
+    getCollection(page = 1) {
+        return service.req(`/collection/list`, {
+            params: page
+        })
+    },
 
 
 
@@ -67,5 +73,18 @@ export default {
     // 查询收货地址
     getAddress() {
         return service.req(`/getAddress`)
+    },
+
+
+
+
+
+    // 加入购物车
+    addShop(id) {
+        return service.req(`/addShop`, { id })
+    },
+    // 查询获取购物车数据
+    getCard() {
+        return service.req(`/getCard`, {})
     }
 }

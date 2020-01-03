@@ -6,17 +6,19 @@
         <div class="person-wrap" ref="personWrap">
           <ul class="person-list" ref="personTab">
             <li class="person-item" v-for="(item,index) in arr" :key="index">
-              <div @click="clickimg(item.goodsId)"> <img :src="item.image" width="120px" height="150px" /> </div>
+              <div @click="clickimg(item.goodsId)">
+                <img :src="item.image" width="120px" height="150px" />
+              </div>
               <div class="text">{{item.goodsName}}</div>
               <div class="money">
                 <div>￥{{item.price}}</div>
                 <div class="mallprice">￥{{item.mallPrice}}</div>
               </div>
-              <div class="shopping">
+              <div class="shopping" @click="clickshop(item.goodsId)">
                 <div class="shop">
                   <van-icon name="cart-o" />
                 </div>
-                <div class="details">查看详情</div>
+                <div class="details" @click="clickimg(item.goodsId)">查看详情</div>
               </div>
             </li>
           </ul>
@@ -28,6 +30,7 @@
 
 <script>
 import BScroll from "better-scroll";
+import { Toast } from 'vant';
 export default {
   data() {
     return {
@@ -71,9 +74,19 @@ export default {
           console.log(err);
         });
     },
-    clickimg(val){
-      this.$router.push({name:"detailspage",query:{goodsId:val}})
+    clickshop(val) {
+      this.$api
+        .addShop(val)
+        .then(response => {
+        })
+        .catch(err => {
+          console.log(err);
+        });
+         Toast.success('加入购物车成功');
     },
+    clickimg(val) {
+      this.$router.push({ name: "detailspage", query: { goodsId: val } });
+    }
   },
   mounted() {
     this.recommend();
@@ -99,12 +112,10 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  
 }
 .person-wrap {
   width: 100%;
   overflow: hidden;
-
 }
 .person-list {
   display: flex;
@@ -133,16 +144,16 @@ export default {
   height: 30px;
   text-align: center;
   line-height: 30px;
-  background: #FECA3A;
-  color:white;
+  background: #feca3a;
+  color: white;
 }
 .details {
   width: 70px;
   height: 30px;
   text-align: center;
   line-height: 30px;
-  color:white;
+  color: white;
   font-size: 14px;
-  background: #FF4C38;
+  background: #ff4c38;
 }
 </style>

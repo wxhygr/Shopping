@@ -71,6 +71,18 @@ const routes = [{
         component: () =>
             import ("../views/Address/addressAdit.vue")
     },
+    {
+        path: "/order",
+        name: "order",
+        component: () =>
+            import ("../views/My/child/order.vue")
+    },
+    {
+        path: "/collection",
+        name: "collection",
+        component: () =>
+            import ("../views/My/child/collection.vue")
+    },
 
 
 
