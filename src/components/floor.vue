@@ -68,7 +68,6 @@ export default {
           this.arr = res.data.floor1;
           this.list = res.data.floor2;
           this.crr = res.data.floor3;
-          console.log(this.crr);
           this.hrr = res.data.hotGoods;
         })
         .catch(err => {

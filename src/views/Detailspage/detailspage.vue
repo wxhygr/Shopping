@@ -51,19 +51,21 @@
         <van-goods-action-icon icon="shop-o" text="店铺" info="6" />
         <van-goods-action-button type="warning" text="加入购物车" @click="clickshopping" />
         <van-goods-action-button type="danger" text="立即购买" />
+        
       </van-goods-action>
     </div>
-  </div>                
+  </div>
 </template>
  
 <script>
+import { Toast } from 'vant';
 export default {
   data() {
     return {
       goodsId: "",
       arr: {},
       goods_serlal_number: "",
-      crr:'',
+      crr: ""
     };
   },
   components: {},
@@ -83,8 +85,7 @@ export default {
     isCollection() {
       this.$api
         .isCollection(this.goodsId)
-        .then(res => {
-        })
+        .then(res => {})
         .catch(err => {
           console.log(err);
         });
@@ -92,21 +93,29 @@ export default {
     clickback() {
       this.$router.back();
     },
-    clickshopping(){
-           this.$api.addShop(this.goodsId).then(response => {
-           }).catch(err => {
-             console.log(err);
-           })
+    clickshopping() {
+      this.$api
+        .addShop(this.goodsId)
+        .then(response => {
+           if(response.code === 200){
+             Toast.success('加入购物车成功');
+           }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    getCard(){
-      this.$api.getCard({}).then(res => {
-        this.crr = res.shopList.length
-        this.crr = Number(this.crr)
-      }).catch(err => {
-        console.log(err);
-      })
+    getCard() {
+      this.$api
+        .getCard({})
+        .then(res => {
+          this.crr = res.shopList.length;
+          this.crr = Number(this.crr);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-
     clickxin() {}
   },
   mounted() {

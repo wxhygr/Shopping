@@ -2,25 +2,25 @@
   <div>
     <div class="top">会员中心</div>
     <div class="portrait">
-      <div class="setup">
-          <van-icon name="setting-o" class="tubiao" />
+      <div class="setup" >
+        <van-icon name="setting-o" class="tubiao" is-link @click="showPopup" />
       </div>
+      <van-popup v-model="show" position="bottom" :style="{ height: '100%' }">内容</van-popup>
       <div class="sign">
-        <div class="sign-one" v-if="this.usename === ''" >
+        <div class="sign-one" v-if="this.usename === ''">
           <img src="../../assets/img/2.jpg" width="90px" height="90px" class="aa" />
         </div>
-        <div class="sign-one" v-else-if="this.usename !== ''" >
+        <div class="sign-one" v-else-if="this.usename !== ''">
           <img src="../../assets/img/3.jpeg" width="90px" height="90px" class="aa" />
         </div>
       </div>
       <div></div>
 
-       <div class="usename" v-if="this.usename === ''">欢迎您</div>
-       <div class="usename" v-else-if="this.usename !== ''">欢迎您:{{this.usename}}</div>
+      <div class="usename" v-if="this.usename === ''">欢迎您</div>
+      <div class="usename" v-else-if="this.usename !== ''">欢迎您:{{this.usename}}</div>
 
-      <div class="login"  @click="clicklogin" v-if="this.usename === ''">请登录/注册</div>
-      <div class="login"  @click="clickloginout"  v-else-if="this.usename !== ''" >退出登录 </div>
-      
+      <div class="login" @click="clicklogin" v-if="this.usename === ''">请登录/注册</div>
+      <div class="login" @click="clickloginout" v-else-if="this.usename !== ''">退出登录</div>
     </div>
     <div class="task">
       <div class="task-one">
@@ -45,7 +45,7 @@
       </div>
     </div>
     <div class="order" @click="clickall">
-      <div class="left" >
+      <div class="left">
         <div>
           <van-icon name="records" size="25px" class="ss" />
         </div>全部订单
@@ -54,7 +54,7 @@
     </div>
 
     <div class="order" @click="collection">
-      <div class="left" >
+      <div class="left">
         <div>
           <van-icon name="points" size="25px" class="ss" />
         </div>收藏商品
@@ -86,47 +86,52 @@
 export default {
   data() {
     return {
-        usename:'',
-        code:'',
-         show: false,
-
+      usename: "",
+      code: "",
+      show: false,
+      show: false
     };
   },
   components: {},
   methods: {
-      clicklogin(){
-          this.$router.push({name:"sign"})
-      },
-      clickloginout(){
-          this.$api.loginOut({}).then(res => {
-              this.code = res.code
-              console.log(res);
-              console.log(this.code);
-          }).catch(err => {
-              console.log(err);
-          })
-          localStorage.removeItem("usename")
-          this.usename = ''
-          //this.$router.push({name:"home"})
-      },
-      clickall(){
-     this.$router.push({name:"order"})
-      },
-      collection(){
-       this.$router.push({name:"collection"})
-      },
-      clickaddress(){
-     this.$router.push({name:"address"})
-      },
-       
-       showPopup() {
+    clicklogin() {
+      this.$router.push({ name: "sign" });
+    },
+    clickloginout() {
+      this.$api
+        .loginOut({})
+        .then(res => {
+          this.code = res.code;
+          console.log(res);
+          console.log(this.code);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      localStorage.removeItem("usename");
+      this.usename = "";
+      //this.$router.push({name:"home"})
+    },
+    clickall() {
+      this.$router.push({ name: "order" });
+    },
+    collection() {
+      this.$router.push({ name: "collection" });
+    },
+    clickaddress() {
+      this.$router.push({ name: "address" });
+    },
+    showPopup() {
+      this.show = true;
+    },
+    showPopup() {
       this.show = true;
     }
   },
   mounted() {
-      if(localStorage.usename){
-       this.usename = localStorage.getItem("usename")
-      }
+    if (localStorage.usename) {
+      this.usename = localStorage.getItem("usename");
+    }
   },
   watch: {},
   computed: {}
@@ -220,5 +225,4 @@ export default {
     margin-top: 5px;
   }
 }
-
 </style>
