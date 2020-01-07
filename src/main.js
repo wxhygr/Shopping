@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+//  vuex
 import store from './store'
 //import axios from './http'
 // ui组件库
@@ -13,7 +14,6 @@ import { PullRefresh } from 'vant';
 import { Lazyload } from 'vant';
 import BScroll from 'better-scroll'
 import AMap from 'vue-amap'; //注意不要和 AMap原始名称覆盖
-
 
 
 

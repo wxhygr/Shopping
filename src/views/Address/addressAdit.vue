@@ -25,6 +25,7 @@
 </template>
 
 <script>
+// 引入城市的信息
 import Vue from 'vue'
 import areaList from "../../area.js"
 Vue.prototype.areaList = areaList
@@ -39,7 +40,6 @@ export default {
   },
   components: {},
   methods: {
-      
       onSave(content) {
        let len = this.searchResult.length + 1;
        this.$api.postAddress(`/address`,{

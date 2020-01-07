@@ -14,8 +14,8 @@
                 <div>￥{{item.price}}</div>
                 <div class="mallprice">￥{{item.mallPrice}}</div>
               </div>
-              <div class="shopping" @click="clickshop(item.goodsId)">
-                <div class="shop">
+              <div class="shopping" >
+                <div class="shop" @click="clickshop(item.goodsId)">
                   <van-icon name="cart-o" />
                 </div>
                 <div class="details" @click="clickimg(item.goodsId)">查看详情</div>

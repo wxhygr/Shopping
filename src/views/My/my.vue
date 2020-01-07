@@ -2,10 +2,61 @@
   <div>
     <div class="top">会员中心</div>
     <div class="portrait">
-      <div class="setup" >
+      <div class="setup">
         <van-icon name="setting-o" class="tubiao" is-link @click="showPopup" />
       </div>
-      <van-popup v-model="show" position="bottom" :style="{ height: '100%' }">内容</van-popup>
+      <van-popup v-model="show" position="bottom" :style="{ height: '100%' }">
+        <div class="top-one">
+          <div class="gou" @click="clickvan">
+            <van-icon name="arrow-left" />
+          </div>
+          <div class="address">个人资料</div>
+        </div>
+        <div class="my">
+          <div class="my-one">github:</div>
+          <div class="my-two"></div>
+        </div>
+
+        <div class="my1">
+          <div class="my-one1">头像:</div>
+          <div class="my-two1"></div>
+        </div>
+
+        <div class="my">
+          <div class="my-one">用户名:</div>
+          <div class="my-two">
+            <van-field v-model="this.usename" />
+          </div>
+        </div>
+
+        <div class="my">
+          <div class="my-one">昵称:</div>
+          <div class="my-two">
+            <van-field v-model="this.usename" />
+          </div>
+        </div>
+
+        <div class="my">
+          <div class="my-one">性别:</div>
+          <div class="my-two">
+            <van-field v-model="gender" placeholder="请输入性别" />
+          </div>
+        </div>
+
+        <div class="my">
+          <div class="my-one">邮箱:</div>
+          <div class="my-two">
+            <van-field v-model="email" placeholder="请输入邮箱" />
+          </div>
+        </div>
+
+        <div class="my">
+          <div class="my-one">出生年月:</div>
+          <div class="my-two">
+            <Calendar v-model="shows" :min-date="minDate" :max-date="maxDate" />
+          </div>
+        </div>
+      </van-popup>
       <div class="sign">
         <div class="sign-one" v-if="this.usename === ''">
           <img src="../../assets/img/2.jpg" width="90px" height="90px" class="aa" />
@@ -83,16 +134,24 @@
 </template>
 
 <script>
+import  Calendar  from 'vant';
 export default {
   data() {
     return {
+      gender: "",
+      email: "",
+      value: "",
       usename: "",
       code: "",
       show: false,
-      show: false
+      shows: false,
+      minDate: new Date(1998, 0, 1),
+      maxDate: new Date(2010, 0, 31)
     };
   },
-  components: {},
+  components: {
+    Calendar
+  },
   methods: {
     clicklogin() {
       this.$router.push({ name: "sign" });
@@ -124,8 +183,8 @@ export default {
     showPopup() {
       this.show = true;
     },
-    showPopup() {
-      this.show = true;
+    clickvan() {
+      this.show = false;
     }
   },
   mounted() {
@@ -224,5 +283,54 @@ export default {
   .ss {
     margin-top: 5px;
   }
+}
+.top-one {
+  width: 360px;
+  height: 40px;
+  border-bottom: 1px solid #d9d9d9;
+  display: flex;
+}
+.gou {
+  width: 30px;
+  height: 40px;
+  line-height: 40px;
+}
+.address {
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+  margin-left: 120px;
+}
+.my {
+  width: 375px;
+  height: 40px;
+  display: flex;
+  justify-content: space-around;
+}
+.my-one {
+  width: 80px;
+  height: 40px;
+  line-height: 40px;
+}
+.my-two {
+  width: 230px;
+  height: 40px;
+  line-height: 40px;
+}
+.my1 {
+  width: 375px;
+  height: 60px;
+  display: flex;
+  justify-content: space-around;
+}
+.my-one1 {
+  width: 80px;
+  height: 60px;
+  line-height: 60px;
+}
+.my-two1 {
+  width: 230px;
+  height: 60px;
+  line-height: 60px;
 }
 </style>

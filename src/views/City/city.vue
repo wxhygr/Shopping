@@ -9,47 +9,86 @@
 
     <div class="search">
       <form action="/">
-        <van-search v-model="value" placeholder="请输入搜索关键词" />
+        <van-search v-model="value" placeholder="请输入搜索关键词"  @input="inpt(value)"/>
       </form>
     </div>
     <div class="bottom">
       <div class="current">当前城市</div>
       <div class="current-city">
-        <div class="current-city1">成都市</div>
+        <div class="current-city3">成都市</div>
       </div>
 
       <div class="current">热门城市</div>
 
-       <div class="current-city2">
-        <div class="current-city1">成都市</div>
-         <div class="current-city1">成都市</div>
-          <div class="current-city1">成都市</div>
-           <div class="current-city1">成都市</div>
-            <div class="current-city1">成都市</div>
-             <div class="current-city1">成都市</div>
-            
-       </div>
+      <div class="current-city2">
+        <div class="current-city1" v-for="(item,index) in arr" :key="index">{{item.name}}</div>
+      </div>
 
-
+      <div>
+        <van-index-bar :index-list="indexList">
+          <div v-for="(item) in indexList" :key="item.id">
+            <van-index-anchor :index="item"></van-index-anchor>
+            <div v-for="(item1,index) in crr" :key="item1.id">
+              <div v-if="index === item">
+                <div v-for="(item3) in item1" :key="item3.id">
+                  <div class="city">{{item3.name}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </van-index-bar>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+// 引入城市的信息
+import Vue from "vue";
+import areaList from "../../city.js";
+Vue.prototype.areaList = areaList;
+
 export default {
   data() {
     return {
-      value: ""
+      value: "",
+      areaList,
+      arr: [],
+      crr: {},
+      indexList: [],
+      Nlist: []
     };
   },
   components: {},
   methods: {
     clickvan() {
       this.$router.back();
+    },
+    inpt(val){
+      let  inputone = []
+      this.Nlist = Object.value(areaList.data.cities)
+      this.Nlist.map(item => {
+        return  console.log(item);
+      })
     }
   },
-  mounted() {},
-  watch: {},
+  mounted() {
+    this.arr = areaList.data.hotCities;
+    this.crr = areaList.data.cities
+    
+    
+
+    for (let i in this.crr) {
+      this.indexList.push(i);
+    }
+  },
+  watch: {
+    search() {
+      this.Nlist.filter(it => {
+        return JSON.stringify(it).includes(value);
+      });
+    }
+  },
   computed: {}
 };
 </script>
@@ -74,8 +113,6 @@ export default {
 }
 .bottom {
   width: 375px;
-  height: 667px;
-  border: 1px solid red;
 }
 .search {
   width: 375px;
@@ -94,7 +131,7 @@ export default {
   align-items: center;
 }
 .current-city2 {
-  width: 375px;
+  width: 368px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -107,5 +144,19 @@ export default {
   margin-top: 5px;
   text-align: center;
   line-height: 30px;
+}
+.current-city3 {
+  width: 100px;
+  height: 30px;
+  border: 1px solid #666;
+  margin-left: 10px;
+  text-align: center;
+  line-height: 30px;
+}
+.city {
+  width: 360px;
+  height: 20px;
+  line-height: 20px;
+  margin-left: 10px;
 }
 </style>

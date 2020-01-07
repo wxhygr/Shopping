@@ -3,7 +3,7 @@
     <div class="cation">
       <div class="img">
         <div class="box">
-          <div class="comtent" v-for="(item,index) in arr" :key="index">
+          <div class="comtent" v-for="(item,index) in arr" :key="index" @click="clickid(item.mallCategoryId)">
               <img :src="item.image" width="55px" height="55px">
               <div class="box1">{{item.mallCategoryName}}</div>
           </div>
@@ -36,6 +36,9 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    clickid(val){
+      this.$router.push({name:"category",query:{mallCategoryId:val}})
     }
   },
   mounted() {

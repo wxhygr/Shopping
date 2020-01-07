@@ -30,6 +30,10 @@ export default {
     recommend() {
         return service.req('/recommend')
     },
+    //分类查询商品
+    category(id) {
+        return service.req(`/classification?mallSubId=${id}`)
+    },
     // 搜索
     search({ value, page = 1 }) {
         return service.req('/search', {
@@ -86,5 +90,21 @@ export default {
     // 查询获取购物车数据
     getCard() {
         return service.req(`/getCard`, {})
+    },
+    // 购物车删除数据
+    deleteShop(id) {
+        return service.post('/deleteShop', id)
+    },
+    //购物车加减数量
+    editCart(count, id, mallPrice) {
+        return service.req('/editCart', {
+            count,
+            id,
+            mallPrice
+        })
+    },
+    //提交订单
+    placeOrder({...args }) {
+        return service.req('/order', args)
     }
 }

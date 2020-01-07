@@ -83,6 +83,12 @@ const routes = [{
         component: () =>
             import ("../views/My/child/collection.vue")
     },
+    {
+        path: "/shoppingpayment",
+        name: "shoppingpayment",
+        component: () =>
+            import ("../views/Shoppingcar/Shoppingpayment/shoppingpayment.vue")
+    },
 
 
 
