@@ -89,6 +89,24 @@ const routes = [{
         component: () =>
             import ("../views/Shoppingcar/Shoppingpayment/shoppingpayment.vue")
     },
+    {
+        path: "/evaluationcenter",
+        name: 'evaluationcenter',
+        component: () =>
+            import ("../views/EvaluationCenter/evaluationcenter.vue")
+    },
+    {
+        path: "/center",
+        name: "center",
+        component: () =>
+            import ("../views/EvaluationCenter/center.vue")
+    },
+    {
+        path: "/evaluationdetails",
+        name: "evaluationdetails",
+        component: () =>
+            import ("../views/EvaluationCenter/evaluationdetails.vue")
+    },
 
 
 

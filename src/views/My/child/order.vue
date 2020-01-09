@@ -7,31 +7,44 @@
       <div class="address">我的订单</div>
     </div>
     <div>
-      <van-tabs  swipe-threshold = 5 >
+      <van-tabs  :swipe-threshold = "threshold" >
         <van-tab title="全部" >内容 1</van-tab>
         <van-tab title="待支付" >内容 2</van-tab>   
         <van-tab title="代发货" >内容 2</van-tab>
         <van-tab title="待收货">内容 2</van-tab>
-        <van-tab title="已完成"> 内容 2</van-tab>
+        <van-tab title="已完成"><completed></completed> </van-tab>
       </van-tabs>
     </div>
   </div>
 </template>
 
 <script>
+import completed from ""
 export default {
   data() {
     return {
+      threshold:5,
     };
   },
-  components: {},
+  components: {
+    completed,
+  },
   methods: {
     clickvan() {
       this.$router.back();
     },
+    getMyOrder(){
+      this.$api.getMyOrder().then(res => {
+        console.log(res);
+      }).catch(err => {
+        console.log(err);
+      })
+    }
     
   },
-  mounted() {},
+  mounted() {
+    this.getMyOrder()
+  },
   watch: {},
   computed: {}
 };

@@ -86,7 +86,6 @@ export default {
       this.$api
         .getCard({})
         .then(res => {
-          console.log(res);
           this.arr = res.shopList;
         })
         .catch(err => {
@@ -153,6 +152,7 @@ export default {
         }
       });
       localStorage.setItem("crr", JSON.stringify(this.crr));
+      console.log(this.crr);
       this.$router.push({ name: "shoppingpayment" });
     }
   },

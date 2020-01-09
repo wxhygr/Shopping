@@ -17,7 +17,7 @@
           <div v-for="(item1,index) in mallSubName" :key="index">
             <van-tab :title="item1.mallSubName" :name="item1.mallSubId">
               <div v-for="(item2,index) in crr" :key="index">
-                <div class="box">
+                <div class="box" @click="clickdetail(item2.id)">
                   <div class="box-one">
                     <div class="box-one1">
                       <img :src="item2.image" width="75px" height="65px" />
@@ -98,6 +98,9 @@ export default {
       this.mallSubId = this.mallSubName[0].mallSubId;
       // 点击刷新每一项的值
       this.clickss(this.mallSubId);
+    },
+    clickdetail(val){
+      this.$router.push({name:"detailspage",query:{goodsId:val}})
     }
   },
   mounted() {

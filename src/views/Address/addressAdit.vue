@@ -8,14 +8,14 @@
           </div>
           <div class="address">编辑地址</div>
         </div>
-         
+
         <van-address-edit
           :area-list="areaList"
           show-delete
           show-set-default
           show-search-result
           :search-result="searchResult"
-          :area-columns-placeholder="['请选择', '请选择', '请选择']"
+          :address-info="addressinfo"
           @save="onSave"
           @delete="onDelete"
         />
@@ -26,51 +26,77 @@
 
 <script>
 // 引入城市的信息
-import Vue from 'vue'
-import areaList from "../../area.js"
-Vue.prototype.areaList = areaList
-
+import Vue from "vue";
+import areaList from "../../area.js";
+Vue.prototype.areaList = areaList;
+import { Toast } from "vant";
 
 export default {
   data() {
     return {
-          areaList,
-      searchResult: []
+      areaList,
+      searchResult: [],
+      address: [],
+      addressinfo: {}
     };
   },
   components: {},
   methods: {
-      onSave(content) {
-       let len = this.searchResult.length + 1;
-       this.$api.postAddress(`/address`,{
-           id:len,
-           name:content.name,
-           tel:content.tel,
-           province:content.province,
-           city:content.city,
-           county:content.county,
-           is_default:content.is_default,
-           address:content.province + content.city + content.county + content.address_detail,
-            }).then(res => {
-           console.log(res);
-           }).catch(err => {
-               console.log(err);
-           })
+    onSave(content) {
+      if (this.$route.query.crr) {
+        let obj = {
+          name: content.name,
+          tel: content.tel,
+          isDefault: content.isDefault,
+          province: content.province,
+          city: content.city,
+          county: content.county,
+          addressDetail: content.addressDetail,
+          id: this.addressinfo._id
+        };
+        this.$api
+          .postAddress(obj)
+          .then(res => {
+            console.log(res);
+            Toast.success("修改地址成功");
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        this.$router.push({ name: "address" });
+      } else {
+        this.$api
+          .postAddress(content)
+          .then(res => {
+            console.log(res);
+            Toast.success("新建地址成功");
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        this.$router.push({ name: "address" });
+      }
     },
     onDelete() {
-          this.$api.deleteAddress({
-              id:this.len,
-          }).then(res => {
-              console.log(res);
-          }).catch(err => {
-              console.log(err);
-          })
+      this.$api
+        .deleteAddress(this.addressinfo._id)
+        .then(res => {
+          console.log(res);
+          this.$router.push({ name: "address" });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    clickvan(){
-        this.$router.back()
+    clickvan() {
+      this.$router.back();
     }
   },
   mounted() {
+    if (this.$route.query.crr) {
+      this.address = this.$route.query.crr;
+      this.addressinfo = this.address[0];
+    }
   },
   watch: {},
   computed: {}

@@ -4,10 +4,11 @@
       <div class="box-one">
         <div class="top">
           <div class="gou">
-            <van-icon name="arrow-left" />
+            <van-icon name="arrow-left" @click="clickvan" />
           </div>
           <div class="address">地址列表</div>
         </div>
+
         <van-address-list
           v-model="chosenAddressId"
           :list="list"
@@ -24,21 +25,9 @@
 export default {
   data() {
     return {
-      chosenAddressId: "1",
-      list: [
-        {
-          id: "1",
-          name: "张三",
-          tel: "13000000000",
-          address: "浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室"
-        },
-        {
-          id: "2",
-          name: "李四",
-          tel: "1310000000",
-          address: "浙江省杭州市拱墅区莫干山路 50 号"
-        }
-      ]
+      chosenAddressId: '1',
+      arr: [],
+      list: []
     };
   },
   components: {},
@@ -48,18 +37,41 @@ export default {
     },
 
     onEdit(item, index) {
-      this.$router.push({ name: "addressAdit" });
+        let crr =[]
+        crr = this.arr.filter(item1 => {
+         return  item1._id === item.id
+         })
+        item._id
+         console.log(crr);
+    this.$router.push({ name: "addressAdit",query:{crr:crr} });
     },
-    getAddress(){
-      this.$api.getAddress().then(res => {
-        console.log(res);
-      }).catch(err => {
-        console.log(err);
-      })
+    getAddress() {
+      this.$api
+        .getAddress()
+        .then(res => {
+          this.arr = res.address;
+          this.arr.map((item,index) => {
+            this.list.push({
+              id: item._id,
+              name: item.name,
+              tel: item.tel,
+              address: `${item.province}${item.city}${item.county}${item.addressDetail}`,
+              isDefault:item.isDefault,
+            });
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    clickvan() {
+      this.$router.back();
     }
   },
   mounted() {
-    this.getAddress()
+    this.getAddress();
+    
+   
   },
   watch: {},
   computed: {}
@@ -76,20 +88,19 @@ export default {
 }
 .top {
   width: 360px;
-  height: 30px;
-  border-bottom:1px solid #d9d9d9;
+  height: 40px;
+  border-bottom: 1px solid #d9d9d9;
   display: flex;
- 
 }
 .gou {
   width: 30px;
-  height: 30px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 40px;
 }
 .address {
   width: 100px;
-  height: 30px;
-  line-height: 25px;
+  height: 40px;
+  line-height: 40px;
   margin-left: 120px;
 }
 </style>

@@ -8,11 +8,7 @@
     </div>
 
     <div class="address">
-      <van-contact-card
-        :type="cardType"
-        add-text="添加地址"
-        @click="clickaddress"
-      />
+      <van-contact-card :type="cardType" add-text="添加地址" @click="clickaddress" />
 
       <!-- <div class="Icon">
         <div class="Icon-one">
@@ -51,6 +47,7 @@
         </div>
       </div>
     </div>
+
     <van-submit-bar :price="num" button-text="提交订单" @submit="onSubmit" />
   </div>
 </template>
@@ -59,7 +56,7 @@
 export default {
   data() {
     return {
-      arr: [],
+      arr: []
     };
   },
   components: {},
@@ -84,19 +81,29 @@ export default {
           idDirect: true
         })
         .then(res => {
+          localStorage.removeItem("crr");
+          this.arr = '',
+          this.$router.push({name:"home"})
           console.log(res);
         })
         .catch(err => {
           console.log(res);
         });
     },
-    clickaddress(){
-      this.$router.push({name:"address"})
+
+    clickaddress() {
+      this.$router.push({ name: "address" });
     }
   },
   mounted() {
-    this.arr = JSON.parse(localStorage.getItem("crr"));
+    if (this.$route.query.obj) {
+      this.arr = this.$route.query.obj;
+    } else if (JSON.parse(localStorage.getItem("crr"))) {
+      this.arr = JSON.parse(localStorage.getItem("crr"));
+    }
+
     console.log(this.arr);
+    console.log(this.num);
   },
   watch: {},
   computed: {
@@ -105,11 +112,9 @@ export default {
       this.arr.map(item => {
         num += item.present_price * item.count;
       });
-      return num;
+      return num * 100;
     },
-    cardType() {
-      return 
-    },
+    cardType() {}
   }
 };
 </script>

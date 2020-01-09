@@ -52,9 +52,16 @@
 
         <div class="my">
           <div class="my-one">出生年月:</div>
-          <div class="my-two">
-            <Calendar v-model="shows" :min-date="minDate" :max-date="maxDate" />
-          </div>
+          <div class="my-two123">
+            <van-datetime-picker
+              v-model="currentDate"
+              type="date"
+              @confirm-button-text = "success" 
+              :min-date="minDate"
+              :max-date="maxDate"
+               class="date"
+            />
+           </div>
         </div>
       </van-popup>
       <div class="sign">
@@ -86,7 +93,7 @@
         <van-icon name="logistics" size="45px" class="van" />
         <div class="text">待收货</div>
       </div>
-      <div class="task-one">
+      <div class="task-one" @click="evaluationcenter">
         <van-icon name="notes-o" size="45px" class="van" />
         <div class="text">评价</div>
       </div>
@@ -134,7 +141,7 @@
 </template>
 
 <script>
-import  Calendar  from 'vant';
+import Calendar from "vant";
 export default {
   data() {
     return {
@@ -144,9 +151,9 @@ export default {
       usename: "",
       code: "",
       show: false,
-      shows: false,
-      minDate: new Date(1998, 0, 1),
-      maxDate: new Date(2010, 0, 31)
+      minDate: new Date(1990, 0, 1),
+      maxDate: new Date(2020, 10, 1),
+      currentDate: "",
     };
   },
   components: {
@@ -185,6 +192,12 @@ export default {
     },
     clickvan() {
       this.show = false;
+    },
+    success(){
+      
+    },
+    evaluationcenter(){
+      this.$router.push({name:"evaluationcenter"})
     }
   },
   mounted() {
@@ -332,5 +345,16 @@ export default {
   width: 230px;
   height: 60px;
   line-height: 60px;
+}
+.date{
+  display: none;
+}
+.my-two123 {
+  width: 230px;
+  height: 40px;
+  line-height: 40px;
+}
+.my-two123:hover .date{
+  display: block;
 }
 </style>
