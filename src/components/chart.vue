@@ -24,7 +24,6 @@ export default {
         .recommend()
         .then(res => {
           this.images = res.data.slides;
-          console.log(res);
         })
         .catch(err => {
           console.log(err);

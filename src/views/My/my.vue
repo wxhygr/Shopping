@@ -6,63 +6,13 @@
         <van-icon name="setting-o" class="tubiao" is-link @click="showPopup" />
       </div>
       <van-popup v-model="show" position="bottom" :style="{ height: '100%' }">
-        <div class="top-one">
-          <div class="gou" @click="clickvan">
-            <van-icon name="arrow-left" />
-          </div>
-          <div class="address">个人资料</div>
-        </div>
-        <div class="my">
-          <div class="my-one">github:</div>
-          <div class="my-two"></div>
-        </div>
-
-        <div class="my1">
-          <div class="my-one1">头像:</div>
-          <div class="my-two1"></div>
-        </div>
-
-        <div class="my">
-          <div class="my-one">用户名:</div>
-          <div class="my-two">
-            <van-field v-model="this.usename" />
-          </div>
-        </div>
-
-        <div class="my">
-          <div class="my-one">昵称:</div>
-          <div class="my-two">
-            <van-field v-model="this.usename" />
-          </div>
-        </div>
-
-        <div class="my">
-          <div class="my-one">性别:</div>
-          <div class="my-two">
-            <van-field v-model="gender" placeholder="请输入性别" />
-          </div>
-        </div>
-
-        <div class="my">
-          <div class="my-one">邮箱:</div>
-          <div class="my-two">
-            <van-field v-model="email" placeholder="请输入邮箱" />
-          </div>
-        </div>
-
-        <div class="my">
-          <div class="my-one">出生年月:</div>
-          <div class="my-two123">
-            <van-datetime-picker
-              v-model="currentDate"
-              type="date"
-              @confirm-button-text = "success" 
-              :min-date="minDate"
-              :max-date="maxDate"
-               class="date"
-            />
-           </div>
-        </div>
+          <div class="top-one">
+      <div class="gou" @click="clickvan">
+        <van-icon name="arrow-left" />
+      </div>
+      <div class="address">个人资料</div>
+    </div>
+             <information></information>
       </van-popup>
       <div class="sign">
         <div class="sign-one" v-if="this.usename === ''">
@@ -97,8 +47,8 @@
         <van-icon name="notes-o" size="45px" class="van" />
         <div class="text">评价</div>
       </div>
-      <div class="task-one">
-        <van-icon name="points" size="45px" class="van" />
+      <div class="task-one" @click="complete">
+        <van-icon name="points" size="45px" class="van" :info="this.number"/>
         <div class="text">已完成</div>
       </div>
     </div>
@@ -129,7 +79,7 @@
       <div class="right">></div>
     </div>
 
-    <div class="order">
+    <div class="order" @click="recentlybrowse">
       <div class="left">
         <div>
           <van-icon name="send-gift-o" size="25px" class="ss" />
@@ -142,22 +92,19 @@
 
 <script>
 import Calendar from "vant";
+import information from "../My/child/information.vue"
 export default {
   data() {
     return {
-      gender: "",
-      email: "",
-      value: "",
       usename: "",
       code: "",
       show: false,
-      minDate: new Date(1990, 0, 1),
-      maxDate: new Date(2020, 10, 1),
-      currentDate: "",
+      number:'',
     };
   },
   components: {
-    Calendar
+    Calendar,
+    information
   },
   methods: {
     clicklogin() {
@@ -185,7 +132,12 @@ export default {
       this.$router.push({ name: "collection" });
     },
     clickaddress() {
-      this.$router.push({ name: "address" });
+      let num = 20
+      this.$router.push({ name: "address",query:{num:num}});
+      console.log(num);
+    },
+    complete(){
+    this.$router.push({name:"order"})
     },
     showPopup() {
       this.show = true;
@@ -193,14 +145,22 @@ export default {
     clickvan() {
       this.show = false;
     },
-    success(){
-      
-    },
     evaluationcenter(){
       this.$router.push({name:"evaluationcenter"})
+    },
+    recentlybrowse(){
+      this.$router.push({name:"recentlybrowse"})
+    },
+    getOrderNum(){
+      this.$api.getOrderNum().then(res => {
+        this.number = res.numList.length
+        this.number = Number(this.number)
+      }).catch(err => {
+      })
     }
   },
   mounted() {
+    this.getOrderNum()
     if (localStorage.usename) {
       this.usename = localStorage.getItem("usename");
     }
@@ -209,7 +169,6 @@ export default {
   computed: {}
 };
 </script>
-
 <style scoped lang='scss'>
 .top {
   width: 375px;
@@ -314,47 +273,5 @@ export default {
   line-height: 40px;
   margin-left: 120px;
 }
-.my {
-  width: 375px;
-  height: 40px;
-  display: flex;
-  justify-content: space-around;
-}
-.my-one {
-  width: 80px;
-  height: 40px;
-  line-height: 40px;
-}
-.my-two {
-  width: 230px;
-  height: 40px;
-  line-height: 40px;
-}
-.my1 {
-  width: 375px;
-  height: 60px;
-  display: flex;
-  justify-content: space-around;
-}
-.my-one1 {
-  width: 80px;
-  height: 60px;
-  line-height: 60px;
-}
-.my-two1 {
-  width: 230px;
-  height: 60px;
-  line-height: 60px;
-}
-.date{
-  display: none;
-}
-.my-two123 {
-  width: 230px;
-  height: 40px;
-  line-height: 40px;
-}
-.my-two123:hover .date{
-  display: block;
-}
+
 </style>

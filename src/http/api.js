@@ -46,7 +46,6 @@ export default {
         return service.req(`/goods/one?id=${id}&page=${page}`)
     },
 
-
     // 查询是否收藏
     isCollection({ id }) {
         return service.req(`/isCollection`, { id })
@@ -63,13 +62,6 @@ export default {
     getCollection() {
         return service.req(`/collection/list`)
     },
-
-
-
-
-
-
-
     // 增加收货地址请求
     postAddress({...args }) {
         return service.req(`/address`, args)
@@ -86,11 +78,10 @@ export default {
     setDefaultAddress(id) {
         return service.req(`/setDefaultAddress`, { id })
     },
-
-
-
-
-
+    //查询默认收货地址
+    getDefaultAddress() {
+        return service.req(`/getDefaultAddress`)
+    },
     // 加入购物车
     addShop(id) {
         return service.req(`/addShop`, { id })
@@ -119,9 +110,10 @@ export default {
     getMyOrder() {
         return service.req(`/myOrder`)
     },
-
-
-
+    // 查询订单用户数量
+    getOrderNum() {
+        return service.req(`/myOrder/orderNum`)
+    },
     // 查询待评价
     tobeEvaluated() {
         return service.req('/tobeEvaluated')
@@ -139,6 +131,14 @@ export default {
         return service.post('/evaluateOne', {
             _id
         })
+    },
+    //获取用户信息
+    user() {
+        return service.req(`/queryUser`, {})
+    },
+    //保存修改用户信息
+    saveUser({...args }) {
+        return service.req(`/saveUser`, args)
     },
 
 

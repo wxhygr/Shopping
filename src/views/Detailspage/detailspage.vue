@@ -25,7 +25,7 @@
         </div>
         <div class="freight-two" v-else>
           取消收藏：
-          <img src="../../assets/img/心 爱心.png" width="25px" height="18px" @click="clickquxiao" />
+          <img src="../../assets/img/111.png" width="25px" height="18px" @click="clickquxiao" />
         </div>
       </div>
 
@@ -73,10 +73,12 @@
           <div class="count-shu">
             <div class="count1">剩余：{{arr.amount}}</div>
             <div class="count2">每人限购50件</div>
-            <div class="count3"><van-stepper v-model="value" /></div>
+            <div class="count3">
+              <van-stepper v-model="value" />
+            </div>
           </div>
         </div>
-       <van-button type="danger" class="button" @click="purchase">立即购买</van-button>
+        <van-button type="danger" class="button" @click="purchase">立即购买</van-button>
       </van-popup>
     </div>
   </div>
@@ -84,7 +86,7 @@
  
 <script>
 import { Toast } from "vant";
-import detailsaa from "../Detailspage/shop/details.vue"
+import detailsaa from "../Detailspage/shop/details.vue";
 export default {
   data() {
     return {
@@ -94,11 +96,12 @@ export default {
       crr: "",
       code: false,
       show: false,
-      value:1,
+      value: 1,
+      list: []
     };
   },
   components: {
-    detailsaa,
+    detailsaa
   },
   methods: {
     goodOne() {
@@ -107,6 +110,8 @@ export default {
         .then(res => {
           this.arr = res.goods.goodsOne;
           this.goods_serlal_number = res.goods.goodsOne.goods_serlal_number;
+          this.list.push(this.arr);
+          localStorage.setItem("history", JSON.stringify(this.list));
         })
         .catch(err => {
           console.log(err);
@@ -122,6 +127,7 @@ export default {
           if (response.code === 200) {
             Toast.success("加入购物车成功");
           }
+            
         })
         .catch(err => {
           console.log(err);
@@ -182,22 +188,30 @@ export default {
     clickcha() {
       this.show = false;
     },
-    purchase(){
-         let obj =[{
-            cid:this.arr.id,
-            name:this.arr.name,
-            present_price:this.arr.present_price,
-            image_path:this.arr.image,
-            count:this.value,
-         }]
-    this.$router.push({name:"shoppingpayment",query:{obj:obj}})
-         },
+    purchase() {
+      let obj = [
+        {
+          cid: this.arr.id,
+          name: this.arr.name,
+          present_price: this.arr.present_price,
+          image_path: this.arr.image,
+          count: this.value
+        }
+      ];
+      this.$store.state.list = obj;
+      this.$router.push({ name: "shoppingpayment" });
+    }
   },
   mounted() {
     this.goodsId = this.$route.query.goodsId;
     this.goodOne();
     this.isCollection();
     this.getCard();
+
+    let str = JSON.parse(localStorage.getItem("history"));
+    str.map(item => {
+      this.list.push(item);
+    });
   },
   watch: {},
   computed: {}
@@ -354,8 +368,8 @@ export default {
   width: 175px;
   height: 40px;
 }
-.button{
+.button {
   width: 375px;
-  margin-top:50px;
+  margin-top: 50px;
 }
 </style>

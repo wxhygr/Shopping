@@ -9,7 +9,7 @@
 
     <div class="search">
       <form action="/">
-        <van-search v-model="value" placeholder="请输入搜索关键词"  @input="inpt(value)"/>
+        <van-search v-model="search" placeholder="请输入搜索关键词" />
       </form>
     </div>
     <div class="bottom">
@@ -24,7 +24,7 @@
         <div class="current-city1" v-for="(item,index) in arr" :key="index">{{item.name}}</div>
       </div>
 
-      <div>
+      <div v-if="searches === ''">
         <van-index-bar :index-list="indexList">
           <div v-for="(item) in indexList" :key="item.id">
             <van-index-anchor :index="item"></van-index-anchor>
@@ -38,6 +38,13 @@
           </div>
         </van-index-bar>
       </div>
+
+     <div v-else>
+      <div v-for="(item,index) in searches" :key="index">
+             {{item.name}}
+               </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -51,45 +58,41 @@ Vue.prototype.areaList = areaList;
 export default {
   data() {
     return {
-      value: "",
+      search: "",
       areaList,
       arr: [],
       crr: {},
       indexList: [],
-      Nlist: []
+      Nlist: [],
     };
   },
   components: {},
   methods: {
     clickvan() {
       this.$router.back();
-    },
-    inpt(val){
-      let  inputone = []
-      this.Nlist = Object.value(areaList.data.cities)
-      this.Nlist.map(item => {
-        return  console.log(item);
-      })
     }
   },
   mounted() {
     this.arr = areaList.data.hotCities;
-    this.crr = areaList.data.cities
-    
-    
+    this.crr = areaList.data.cities;
+    Object.keys(this.crr).map(item => {
+      this.Nlist.push(...this.crr[item]);
+    });
+    // this.Nlist = areaList.data.cities
+    console.log(this.Nlist);
 
     for (let i in this.crr) {
       this.indexList.push(i);
     }
   },
-  watch: {
-    search() {
-      this.Nlist.filter(it => {
-        return JSON.stringify(it).includes(value);
+  watch: {},
+  computed: {
+    searches() {
+      return this.Nlist.filter(item => {
+        return JSON.stringify(item).includes(this.search);
       });
     }
-  },
-  computed: {}
+  }
 };
 </script>
 

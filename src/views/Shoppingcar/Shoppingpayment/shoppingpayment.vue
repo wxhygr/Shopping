@@ -7,32 +7,61 @@
       <div class="adress">订单结算</div>
     </div>
 
-    <div class="address">
+    <!-- <div class="address" >
       <van-contact-card :type="cardType" add-text="添加地址" @click="clickaddress" />
-
-      <!-- <div class="Icon">
+    </div> -->
+    <div v-if="this.chose.length === 0">
+    <div class="address" >
+      <div class="Icon">
         <div class="Icon-one">
           <van-icon name="location-o" size="28" />
         </div>
       </div>
-      <div class="comtent">
+      <div class="comtent"  >
         <div class="comtent-one">
-          <div class="name">收货人：</div>
-          <div class="tel">12312341234</div>
+          <div class="name">收货人：{{this.crr.name}}</div>
+          <div class="tel">{{this.crr.tel}}</div>
         </div>
-        <div class="comtent-two">收货地址：</div>
+        <div class="comtent-two">收货地址：{{this.address}}</div>
         <div class="comtent-three">(收货不便时，可选免费带收货服务)</div>
       </div>
 
       <div class="Icon">
         <div class="Icon-one">
-          <van-icon name="arrow" size="20" />
+          <van-icon name="arrow" size="20" @click="clickarrow" />
         </div>
-      </div>-->
+      </div>
     </div>
+    <div class="xian"></div>
+</div>
+     <div v-else>
+    <div class="address" >
+      <div class="Icon">
+        <div class="Icon-one">
+          <van-icon name="location-o" size="28" />
+        </div>
+      </div>
+      <div class="comtent" v-for="(item,index) in chose" :key="index">
+        <div class="comtent-one">
+          <div class="name">收货人：{{item.name}}</div>
+          <div class="tel">{{item.tel}}</div>
+        </div>
+        <div class="comtent-two">收货地址：{{item.address}}</div>
+        <div class="comtent-three">(收货不便时，可选免费带收货服务)</div>
+      </div>
+
+      <div class="Icon">
+        <div class="Icon-one">
+          <van-icon name="arrow" size="20" @click="clickarrow" />
+        </div>
+      </div>
+    </div>
+    <div class="xian"></div>
+</div>
+
     <!-- 购物车购买的东西 -->
     <div class="shopping">
-      <div class="shop" v-for="(item,index) in arr" :key="index">
+      <div class="shop" v-for="(item,index) in lists" :key="index">
         <div class="img">
           <div>
             <img :src="item.image_path" width="90px" height="90px" />
@@ -47,74 +76,107 @@
         </div>
       </div>
     </div>
-
     <van-submit-bar :price="num" button-text="提交订单" @submit="onSubmit" />
   </div>
 </template>
 
 <script>
+import { Toast } from "vant";
+import { longStackSupport } from "q";
 export default {
   data() {
     return {
-      arr: []
+      list: [],
+      idDirect: false,
+      crr:{},
+      address:'',
     };
   },
   components: {},
   methods: {
     clickvan() {
-      this.$router.back();
+      this.$router.go(-1);
+      localStorage.removeItem("chooseids");
     },
     onSubmit() {
-      let Id = [];
-      let number = 0;
-      let count = 0;
-      this.arr.map(item => {
-        Id.push(item.cid);
-        number += item.present_price * item.count;
-        count += item.count;
-      });
+      if ( address === '') {
+        Toast("请添加地址");
+      } else {
+        let Id = [];
+        let number = 0;
+        let count = 0;
+        this.lists.map(item => {
+          Id.push(item.cid);
+          number += item.present_price * item.count;
+          count += item.count;
+        });
+        let address = "";
+        address = this.chose[0].address;
+        this.$api
+          .placeOrder({ 
+            orderId: Id,
+            totalPrice: number,
+            count: count,
+            address: address,
+            idDirect: this.idDirect
+          })
+          .then(res => {
+            localStorage.removeItem("crr");
+            this.$router.push({ name: "home" });
+            localStorage.removeItem("chooseids");
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(res);
+          });
+      }
+    },
+    clickaddress() {
+      let num = 1;
+      this.$router.push({ name: "address" });
+      localStorage.setItem("num", num);
+    },
+    clickarrow() {
+      this.$router.push({ name: "address" });
+      localStorage.removeItem("chooseids");
+    },
+    getDefaultAddress() {
       this.$api
-        .placeOrder({
-          orderId: Id,
-          totalPrice: number,
-          count: count,
-          idDirect: true
-        })
+        .getDefaultAddress()
         .then(res => {
-          localStorage.removeItem("crr");
-          this.arr = '',
-          this.$router.push({name:"home"})
+           this.crr = res.defaultAdd
+           this.address =  `${res.defaultAdd.province}${res.defaultAdd.city}${res.defaultAdd.county}${res.defaultAdd.addressDetail}`
           console.log(res);
         })
         .catch(err => {
-          console.log(res);
+          console.log(err);
         });
-    },
-
-    clickaddress() {
-      this.$router.push({ name: "address" });
     }
   },
   mounted() {
-    if (this.$route.query.obj) {
-      this.arr = this.$route.query.obj;
-    } else if (JSON.parse(localStorage.getItem("crr"))) {
-      this.arr = JSON.parse(localStorage.getItem("crr"));
-    }
-
-    console.log(this.arr);
-    console.log(this.num);
+   this.getDefaultAddress()
+    console.log(this.chose);
   },
   watch: {},
   computed: {
     num() {
       let num = 0;
-      this.arr.map(item => {
+      this.lists.map(item => {
         num += item.present_price * item.count;
       });
       return num * 100;
     },
-    cardType() {}
+    cardType() {},
+    lists() {
+      if (this.$store.state.list.length > 0) {
+        return this.$store.state.list;
+      } else {
+        return this.$store.state.shopping;
+      }
+    },
+    chose(){
+      return this.$store.state.chose
+    }
   }
 };
 </script>
@@ -230,5 +292,9 @@ export default {
   height: 30px;
   line-height: 30px;
   font-size: 15px;
+}
+.xian {
+  width: 375px;
+  border: 1px solid #666;
 }
 </style>

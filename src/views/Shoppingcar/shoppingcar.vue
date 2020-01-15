@@ -5,7 +5,16 @@
       <div class="address">购物车</div>
     </div>
     <div class="content" v-if="this.usename ===''">
-      <div @click="clickdenglu" class="denglu">请登录</div>
+      <div class="denglu">
+        <div class="top-one">
+          <div class="top-img">
+            <img src="../../assets/img/shop.png" width="100px" height="100px" class="top-img2" />
+          </div>
+        </div>
+        <div class="toptitle" @click="clickdenglu">
+          <div class="toptitle2">亲，请先去登录</div>
+        </div>
+      </div>
     </div>
 
     <div class="content" v-if="this.usename !==''">
@@ -151,8 +160,9 @@ export default {
           });
         }
       });
-      localStorage.setItem("crr", JSON.stringify(this.crr));
-      console.log(this.crr);
+      this.$store.state.shopping = this.crr
+      // localStorage.setItem("crr", JSON.stringify(this.crr));
+      // console.log(this.crr);
       this.$router.push({ name: "shoppingpayment" });
     }
   },
@@ -278,5 +288,34 @@ export default {
   width: 100px;
   height: 30px;
   line-height: 30px;
+}
+.top-one {
+  width: 375px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.top-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 150px;
+  background: pink;
+}
+.top-img2 {
+  margin: 20px 0 0 20px;
+}
+.toptitle {
+  width: 375px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+}
+.toptitle2 {
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  background: skyblue;
 }
 </style>

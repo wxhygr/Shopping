@@ -25,9 +25,11 @@
 export default {
   data() {
     return {
-      chosenAddressId: '1',
+      chosenAddressId: "",
       arr: [],
-      list: []
+      list: [],
+      num: 0,
+      number: 0
     };
   },
   components: {},
@@ -37,27 +39,30 @@ export default {
     },
 
     onEdit(item, index) {
-        let crr =[]
-        crr = this.arr.filter(item1 => {
-         return  item1._id === item.id
-         })
-        item._id
-         console.log(crr);
-    this.$router.push({ name: "addressAdit",query:{crr:crr} });
+      let crr = [];
+      crr = this.arr.filter(item1 => {
+        return item1._id === item.id;
+      });
+      item._id;
+      console.log(crr);
+      this.$router.push({ name: "addressAdit", query: { crr: crr } });
     },
     getAddress() {
       this.$api
         .getAddress()
         .then(res => {
           this.arr = res.address;
-          this.arr.map((item,index) => {
+          this.arr.map((item, index) => {
             this.list.push({
               id: item._id,
               name: item.name,
               tel: item.tel,
               address: `${item.province}${item.city}${item.county}${item.addressDetail}`,
-              isDefault:item.isDefault,
+              isDefault: item.isDefault
             });
+            if (item.isDefault) {
+              this.chosenAddressId = item._id;
+            }
           });
         })
         .catch(err => {
@@ -65,13 +70,30 @@ export default {
         });
     },
     clickvan() {
-      this.$router.back();
+       if (this.number == 20) {
+        this.$router.back();
+        this.number = 10
+      }
+      let chose = [];
+      chose = this.list.filter(item => {
+        return this.chosenAddressId === item.id;
+      });
+      
+      if (this.num === "1") {
+        this.num = 0;
+        this.$router.push({
+          name: "shoppingpayment",
+          query: { chooseids: chose }
+        });
+      }
+       this.$store.state.chose = chose
+      localStorage.setItem("chooseids", JSON.stringify(chose));
     }
   },
   mounted() {
-    this.getAddress();
-    
-   
+    this.num = localStorage.getItem("num");
+    this.number = this.$route.query.num;
+     this.getAddress();
   },
   watch: {},
   computed: {}

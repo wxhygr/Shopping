@@ -14,9 +14,11 @@ import { PullRefresh } from 'vant';
 import { Lazyload } from 'vant';
 import BScroll from 'better-scroll'
 import AMap from 'vue-amap'; //注意不要和 AMap原始名称覆盖
+import VueWechatTitle from 'vue-wechat-title'
 
 
 
+Vue.use(VueWechatTitle)
 Vue.use(Lazyload);
 Vue.use(PullRefresh);
 Vue.prototype.$api = api

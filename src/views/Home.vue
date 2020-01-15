@@ -82,6 +82,7 @@ export default {
         })
         .then(res => {
           this.arr = res.data.list;
+          console.log(res);
         })
         .catch(err => {});
     },

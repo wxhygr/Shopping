@@ -4,9 +4,9 @@
       <div class="gou" @click="clickvan">
         <van-icon name="arrow-left" />
       </div>
-      <div class="address">我的收藏</div>
+      <div class="adress">最近浏览</div>
     </div>
-    <div class="box" v-for="(item,index) in arr" :key="index">
+     <div class="box" v-for="(item,index) in arr" :key="index">
       <div class="box-one">
         <img :src="item.image_path" width="100px" height="100px" />
       </div>
@@ -25,55 +25,26 @@
 </template>
 
 <script>
-import { Toast } from "vant";
-import { Dialog } from 'vant';
 export default {
   data() {
     return {
-      arr: []
+      arr:[],
     };
   },
   components: {},
   methods: {
-    getCollection() {
-      this.$api
-        .getCollection()
-        .then(res => {
-          this.arr = res.data.list;
-          console.log(this.arr);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     clickvan() {
-      this.$router.back();
+      this.$router.go(-1);
     },
-    clickdelete(val) {
-      Dialog.confirm({
-        message: "确认要删除此收藏吗？"
-      })
-        .then(() => {
-          // on confirm
-
-          this.$api
-            .cancelCollection(val.cid)
-            .then(res => {
-              Toast.success("删除成功");
-              this.getCollection();
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        })
-        .catch(() => {
-          return
-          // on cancel
-        });
+    clickdelete(val){
+       this.arr.splice(this.arr.indexOf(val),1)
+        localStorage.setItem("history",JSON.stringify(this.arr))
     }
   },
   mounted() {
-    this.getCollection();
+   this.arr =  JSON.parse(localStorage.getItem("history"))
+   console.log(this.arr);
+    
   },
   watch: {},
   computed: {}
@@ -82,7 +53,7 @@ export default {
 
 <style scoped lang='scss'>
 .top {
-  width: 375px;
+  width: 360px;
   height: 40px;
   border-bottom: 1px solid #d9d9d9;
   display: flex;
@@ -90,9 +61,9 @@ export default {
 .gou {
   width: 30px;
   height: 40px;
-  line-height: 45px;
+  line-height: 40px;
 }
-.address {
+.adress {
   width: 100px;
   height: 40px;
   line-height: 40px;

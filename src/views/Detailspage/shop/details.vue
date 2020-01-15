@@ -9,10 +9,10 @@
           <div v-for="(item,index) in comment" :key="index" class="both">
             <div class="title">
               <div class="titleone">
-                <img :src="avatar" width="60px" height="60px" class="imgs" />
+                <img :src="item.comment_avatar" width="60px" height="60px" class="imgs" />
               </div>
               <div class="username">
-                {{item.user[0].nickname}}
+                {{item.comment_nickname}}
                 <div>
                   <van-rate v-model="item.rate" size="14" color="red" />
                 </div>
@@ -35,7 +35,8 @@ export default {
       arr: {},
       _id: "",
       comment: {},
-      avatar: ""
+      avatar: "",
+      nickname:"",
     };
   },
   components: {},
@@ -50,7 +51,6 @@ export default {
           this.avatar = res.goods.comment[0].user[0].avatar;
         })
         .catch(err => {
-          console.log(err);
         });
     }
   },
@@ -66,6 +66,7 @@ export default {
 <style scoped lang='scss'>
 .box {
   width: 375px;
+  height: 600px;
 }
 .both {
   width: 375px;

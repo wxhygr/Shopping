@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { Toast } from "vant";
 export default {
   data() {
     return {
@@ -94,8 +95,14 @@ export default {
         })
         .then(res => {
           console.log(res);
-         localStorage.setItem('usename',this.username)
-         //this.$router.push({name:'home'})
+          if (res.msg === "用户名已存在") {
+            Toast("用户名已存在");
+          } else if (res.msg === "请输入完整信息") {
+            Toast("请输入完整信息");
+          } else {
+            localStorage.setItem("usename", this.username);
+            this.$router.push({ name: "home" });
+          }
         })
         .catch(err => {
           console.log(err);
@@ -110,12 +117,22 @@ export default {
           verify: this.code
         })
         .then(response => {
+          if (response.msg === "请输入完整信息") {
+            Toast("请输入完整登录信息");
+          } else if (response.msg === "验证码错误") {
+            Toast("验证码错误，请重新输入");
+          } else if (response.msg === "用户名错误") {
+            Toast("用户名不存在,请重新输入");
+          } else if (response.msg === "密码错误") {
+            Toast("密码错误，请重新输入");
+          } else {
+            localStorage.setItem("usename", this.username);
+            this.$router.push({ name: "my" });
+          }
+
           console.log(response);
-            localStorage.setItem('usename',this.username)
-            this.$router.push({name:'my'})
-        }).catch(err => {
-            console.log(err);
-        });
+        })
+        .catch(err => {});
     }
   },
   mounted() {
